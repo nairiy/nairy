@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulation  va tu manipuler ou pas</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #4CAF50, #81C784);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.2);
+            width: 80%;
+            max-width: 900px;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #f0f0f0;
+        }
+
+        p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #f0f0f0;
+        }
+
+        .choice-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 20px;
+            margin: 15px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 90%;
+            max-width: 350px;
+        }
+
+        .choice-btn:hover {
+            background-color: #388E3C;
+        }
+
+        .choice-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .choice {
+            width: 40%;
+            margin: 10px;
+        }
+
+        .choice img {
+            width: 100%;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .choice img:hover {
+            transform: scale(1.1);
+        }
+
+        .timeline {
+            font-size: 1rem;
+            color: #f0f0f0;
+            margin-top: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Manipulation : va tu manipuler ou aider</h1>
+        <p id="story">Bienvenue dans un monde où chaque décision compte. Chaque mouvement, chaque regard, chaque mot peut
+            déterminer ton avenir. Choisis avec soin, car ici, la manipulation est la clé de la survie.</p>
+
+        <div id="choices" class="choice-container">
+            <div class="choice" onclick="makeChoice(1)">
+                <img src="https://wallpapercave.com/wp/wp3666484.jpg"Accepter Alliance">
+                <p>Accepter l'alliance</p>
+            </div>
+            <div class="choice" onclick="makeChoice(2)">
+                <img src="https://img.anitubu.com/imgs/2024/02/08/hyKfSSfpLjiWFmU.jpg" alt="Refuser Alliance">
+                <p>Refuser l'alliance</p>
+            </div>
+        </div>
+
+        <div id="result" class="hidden"></div>
+        <div id="timeline" class="hidden">Temps écoulé: 00:00</div>
+    </div>
+
+    <script>
+        let userPoints = 0;
+        let time = 0;
+        let timerInterval;
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                time++;
+                document.getElementById('timeline').innerText = `Temps écoulé: ${formatTime(time)}`;
+            }, 1000);
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        function makeChoice(choice) {
+            let storyText = document.getElementById("story");
+            let resultText = document.getElementById("result");
+            let choicesDiv = document.getElementById("choices");
+
+            // Cacher les choix après un choix
+            choicesDiv.style.display = "none";
+            resultText.classList.add("hidden");
+
+            if (choice === 1) {
+                storyText.innerHTML = "Tu as accepté l'alliance. Tu te sens un peu plus puissant, mais tu sais que l'allié que tu as choisi n'est pas sans arrière-pensées. Cette alliance pourrait être un piège.";
+                userPoints += 10;
+                resultText.innerHTML = `Tu as gagné 10 points d'influence. Points actuels: ${userPoints}`;
+                resultText.classList.remove("hidden");
+                setTimeout(nextScenario, 3000);
+            } else if (choice === 2) {
+                storyText.innerHTML = "Tu as refusé l'alliance. Tu préfères jouer seul, mais cela pourrait être risqué. Tu sais que cette décision pourrait t'isoler.";
+                userPoints -= 5;
+                resultText.innerHTML = `Tu as perdu 5 points de contrôle. Points actuels: ${userPoints}`;
+                resultText.classList.remove("hidden");
+                setTimeout(nextScenario, 3000);
+            }
+        }
+
+        function nextScenario() {
+            let storyText = document.getElementById("story");
+            let choicesDiv = document.getElementById("choices");
+            let resultText = document.getElementById("result");
+
+            resultText.classList.add("hidden");
+
+            storyText.innerHTML = "Quelques jours passent. Des rumeurs commencent à circuler sur une manipulation qui pourrait déstabiliser toute l'école. Des choix cruciaux se présentent à toi.";
+            choicesDiv.style.display = "block";
+
+            // Nouveaux choix
+            choicesDiv.innerHTML = `
+                <div class="choice" onclick="makeChoice2(3)">
+                    <img src="https://image-pastemagazine-com-public-bucket.storage.googleapis.com/wp-content/uploads/2024/02/01160610/monster-main-2.jpg" alt="Manipuler Conseiller">
+                    <p>Manipuler le conseiller pour obtenir un avantage décisif</p>
+                </div>
+                <div class="choice" onclick="makeChoice2(4)">
+                    <img src="https://animefangirl.com/wp-content/uploads/2017/11/classroom-of-the-elite.jpg" alt="Allier Etudiant">
+                    <p>Allier un autre étudiant puissant pour t'aider à progresser</p>
+                </div>
+            `;
+        }
+
+        function makeChoice2(choice) {
+            let storyText = document.getElementById("story");
+            let resultText = document.getElementById("result");
+            let choicesDiv = document.getElementById("choices");
+
+            choicesDiv.style.display = "none";
+            resultText.classList.add("hidden");
+
+            if (choice === 3) {
+                storyText.innerHTML = "Tu choisis de manipuler le conseiller. Il t'accorde une faveur, mais à quel prix? Tu es maintenant dans ses bonnes grâces, mais tu devras payer le prix de cette faveur un jour.";
+                userPoints += 15;
+                resultText.innerHTML = `Tu as gagné 15 points d'influence. Points actuels: ${userPoints}`;
+                resultText.classList.remove("hidden");
+                setTimeout(nextScenario2, 3000);
+            } else if (choice === 4) {
+                storyText.innerHTML = "Tu choisis de t'allier avec un étudiant influent. Vous formez une alliance solide, mais tu perds une partie de ton indépendance en devenant dépendant de lui pour tes actions.";
+                userPoints += 10;
+                resultText.innerHTML = `Tu as gagné 10 points d'influence. Points actuels: ${userPoints}`;
+                resultText.classList.remove("hidden");
+                setTimeout(nextScenario2, 3000);
+            }
+        }
+
+        function nextScenario2() {
+            let storyText = document.getElementById("story");
+            let choicesDiv = document.getElementById("choices");
+            let resultText = document.getElementById("result");
+
+            resultText.classList.add("hidden");
+
+            storyText.innerHTML = "L'école devient de plus en plus tendue. Les manœuvres pour obtenir plus de pouvoir sont de plus en plus dangereuses. À chaque instant, un faux pas pourrait te coûter cher.";
+            choicesDiv.style.display = "block";
+
+            choicesDiv.innerHTML = `
+                <div class="choice" onclick="makeChoice3(5)">
+                    <img src="https://vignette.wikia.nocookie.net/deathnote/images/9/9c/Light_yagami.jpg/revision/latest?cb=20110801092518" alt="Manipuler Autres Étudiants">
+                    <p>Manipuler les autres étudiants pour augmenter ton pouvoir</p>
+                </div>
+                <div class="choice" onclick="makeChoice3(6)">
+                    <img src="https://i.pinimg.com/736x/26/99/60/269960ecf12127de4ea9ccd055ce9ef9.jpg" alt="Devenir Indépendant">
+                    <p>Choisir de devenir indépendant, sans alliances, mais risquer l'isolement</p>
+                </div>
+            `;
+        }
+
+        function makeChoice3(choice) {
+            let storyText = document.getElementById("story");
+            let resultText = document.getElementById("result");
+            let choicesDiv = document.getElementById("choices");
+
+            choicesDiv.style.display = "none";
+            resultText.classList.add("hidden");
+
+            if (choice === 5) {
+                storyText.innerHTML = "Tu choisis de manipuler les autres étudiants, d'utiliser leurs faiblesses pour t'imposer comme leader. Peu à peu, tu deviens incontournable, mais la méfiance de tes camarades se fait sentir.";
+                userPoints += 20;
+                resultText.innerHTML = `Tu as gagné 20 points de pouvoir. Points actuels: ${userPoints}`;
+                resultText.classList.remove("hidden");
+                setTimeout(finalScenario, 3000);
+            } else if (choice === 6) {
+                storyText.innerHTML = "Tu choisis de te détacher de tout le monde, de devenir une entité indépendante. Cela te permet de garder ton autonomie, mais tu te retrouves rapidement seul dans un environnement impitoyable.";
+                userPoints -= 10;
+                resultText.innerHTML = `Tu as perdu 10 points d'influence. Points actuels: ${userPoints}`;
+                resultText.classList.remove("hidden");
+                setTimeout(finalScenario, 3000);
+            }
+        }
+
+        function finalScenario() {
+            let storyText = document.getElementById("story");
+            let choicesDiv = document.getElementById("choices");
+            let resultText = document.getElementById("result");
+
+            resultText.classList.add("hidden");
+
+            storyText.innerHTML = "La fin de l'année approche, et tu as accumulé de nombreuses expériences. Les alliés sont nombreux, mais les ennemis aussi. Quelle sera ta place dans cette école ?";
+            choicesDiv.style.display = "block";
+
+            choicesDiv.innerHTML = `
+                <div class="choice" onclick="makeChoice4(7)">
+                    <img src="https://images.alphacoders.com/132/thumb-1920-1329248.png" alt="Rester Leader">
+                    <p>Rester en position de leader et dominer tout le monde</p>
+                </div>
+                <div class="choice" onclick="makeChoice4(8)">
+                    <img src="https://animecorner.me/wp-content/uploads/2021/08/eren.png" alt="Quitter École">
+                    <p>Quitter l'école et renoncer à tout pouvoir</p>
+                </div>
+            `;
+        }
+
+        function makeChoice4(choice) {
+            let storyText = document.getElementById("story");
+            let resultText = document.getElementById("result");
+            let choicesDiv = document.getElementById("choices");
+
+            choicesDiv.style.display = "none";
+            resultText.classList.add("hidden");
+
+            if (choice === 7) {
+                storyText.innerHTML = "Tu choisis de rester en tant que leader. Tu as atteint un niveau de pouvoir inégalé, mais à quel prix ? Tu te retrouves entouré de fausses amitiés et de trahisons.";
+                userPoints += 30;
+                resultText.innerHTML = `Tu as gagné 30 points d'influence. Points finaux: ${userPoints}`;
+                resultText.classList.remove("hidden");
+                setTimeout(endGame, 3000);
+            } else if (choice === 8) {
+                storyText.innerHTML = "Tu choisis de quitter l'école. Tu renonces à toute manipulation et pouvoir, mais à un prix : la tranquillité et la paix intérieure. Tu choisis de vivre sans la pression constante du pouvoir.";
+                userPoints -= 15;
+                resultText.innerHTML = `Tu as perdu 15 points d'influence. Points finaux: ${userPoints}`;
+                resultText.classList.remove("hidden");
+                setTimeout(endGame, 3000);
+            }
+        }
+
+        function endGame() {
+            let storyText = document.getElementById("story");
+            let choicesDiv = document.getElementById("choices");
+
+            storyText.innerHTML = "Le jeu est terminé. Merci d'avoir joué ! Ton score final est " + userPoints + " points d'influence.";
+            choicesDiv.style.display = "none";
+        }
+
+        startTimer();
+    </script>
+</body>
+
+</
